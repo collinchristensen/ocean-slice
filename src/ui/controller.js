@@ -13,8 +13,17 @@ export class UIController {
         this.debugMode = false;
         this.showFps = true;
         this.lowQuality = false;
+        this.statEls = {
+            fps: document.getElementById('fps-stat'),
+            avgFps: document.getElementById('avgfps-stat'),
+            prey: document.getElementById('prey-stat'),
+            predators: document.getElementById('pred-stat'),
+            avgSpeed: document.getElementById('avgspeed-stat'),
+            avgVision: document.getElementById('avgvision-stat')
+        };
         
         this._bindControls();
+        this._toggleFpsStats(this.showFps);
     }
 
     _bindControls() {
@@ -60,6 +69,7 @@ export class UIController {
         
         this._bindToggle('fps-toggle', (active) => {
             this.showFps = active;
+            this._toggleFpsStats(active);
         }, true);
         
         this._bindToggle('lowq-toggle', (active) => {
@@ -106,19 +116,39 @@ export class UIController {
     }
 
     /**
+     * @param {HTMLElement | null} el
+     * @param {string | number} value
+     */
+    _setText(el, value) {
+        if (el) {
+            el.textContent = value;
+        }
+    }
+
+    /**
+     * @param {boolean} visible
+     */
+    _toggleFpsStats(visible) {
+        const rows = [this.statEls.fps, this.statEls.avgFps];
+        for (const el of rows) {
+            if (el?.parentElement) {
+                el.parentElement.hidden = !visible;
+            }
+        }
+    }
+
+    /**
      * Update stats display
      */
     updateStats() {
         const counts = this.world.getCounts();
         const traits = this.world.getAverageTraits();
         
-        document.getElementById('fps-stat').textContent = this.loop.fps;
-        document.getElementById('avgfps-stat').textContent = this.loop.avgFps;
-        document.getElementById('prey-stat').textContent = counts.prey;
-        document.getElementById('pred-stat').textContent = counts.predators;
-        document.getElementById('birth-stat').textContent = this.world.stats.birthsPerMinute;
-        document.getElementById('death-stat').textContent = this.world.stats.deathsPerMinute;
-        document.getElementById('avgspeed-stat').textContent = traits.speed;
-        document.getElementById('avgvision-stat').textContent = traits.vision;
+        this._setText(this.statEls.fps, this.loop.fps);
+        this._setText(this.statEls.avgFps, this.loop.avgFps);
+        this._setText(this.statEls.prey, counts.prey);
+        this._setText(this.statEls.predators, counts.predators);
+        this._setText(this.statEls.avgSpeed, traits.speed);
+        this._setText(this.statEls.avgVision, traits.vision);
     }
 }
