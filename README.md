@@ -4,7 +4,7 @@ A fish simulation prototype with ECS (Entity Component System) and boids. Watch 
 
 ## Screenshot
 
-<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/66e5e36d-df66-4d83-a0e9-0eefdcf7a1fd" />
+<img width="1302" height="737" alt="Screenshot of ocean scene" src="https://github.com/user-attachments/assets/b00275bb-4879-4dcc-a191-e715cf05c5cd" />
 
 ## Running the Simulation
 
